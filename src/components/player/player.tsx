@@ -1,6 +1,9 @@
 import SvgContainer from '../svg-container/svg-container';
+import { useNavigate } from 'react-router-dom';
 
 export default function Player(): JSX.Element {
+const goBack = useNavigate();
+
   return (
     <>
       <SvgContainer />
@@ -12,7 +15,11 @@ export default function Player(): JSX.Element {
           poster='../img/player-poster.jpg'
         ></video>
 
-        <button type='button' className='player__exit'>
+        <button 
+        type='button' 
+        className='player__exit'
+        onClick={() => goBack(-1)}
+        >
           Exit
         </button>
 
