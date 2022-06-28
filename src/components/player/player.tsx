@@ -1,8 +1,12 @@
 import SvgContainer from '../svg-container/svg-container';
 import { useNavigate } from 'react-router-dom';
+import { mockFilms } from '../../mocks/mock-films';
+import { AppRoute } from '../../const/app-route';
+
+const { backgroundImage, videoLink, runTime, name, id } = mockFilms[1];
 
 export default function Player(): JSX.Element {
-const goBack = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -10,15 +14,15 @@ const goBack = useNavigate();
 
       <div className='player'>
         <video
-          src='#'
+          src={videoLink}
           className='player__video'
-          poster='../img/player-poster.jpg'
+          poster={backgroundImage}
         ></video>
 
-        <button 
-        type='button' 
-        className='player__exit'
-        onClick={() => goBack(-1)}
+        <button
+          type='button'
+          className='player__exit'
+          onClick={() => navigate(`${AppRoute.Film}/${id}`)}
         >
           Exit
         </button>
@@ -31,11 +35,11 @@ const goBack = useNavigate();
                 value='30'
                 max='100'
               ></progress>
-              <div className='player__toggler' style={{left: '30%'}}>
+              <div className='player__toggler' style={{ left: '30%' }}>
                 Toggler
               </div>
             </div>
-            <div className='player__time-value'>1:30:29</div>
+            <div className='player__time-value'>{runTime}</div>
           </div>
 
           <div className='player__controls-row'>
@@ -45,7 +49,7 @@ const goBack = useNavigate();
               </svg>
               <span>Play</span>
             </button>
-            <div className='player__name'>Transpotting</div>
+            <div className='player__name'>{name}</div>
 
             <button type='button' className='player__full-screen'>
               <svg viewBox='0 0 27 27' width='27' height='27'>
