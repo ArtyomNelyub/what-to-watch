@@ -9,7 +9,6 @@ import NotFound from './not-found/not-found';
 import RequireAuth from './HOC/require-auth';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../const/app-route';
-import { mockMainPosterProp } from '../mocks/main-film-poster';
 import { AuthorizationStatus } from '../const/authorization-status';
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<Main {...mockMainPosterProp} />}
+          element={<Main />}
         />
         <Route
           path={AppRoute.MyList}

@@ -3,7 +3,7 @@ import FilmCard from '../film-card/film-card';
 import Footer from '../footer/footer';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/app-route';
-import { mockFilmCard } from '../../mocks/film-card-mock';
+import { mockFilms } from '../../mocks/mock-films';
 
 export default function MyList(): JSX.Element {
   return (
@@ -34,7 +34,9 @@ export default function MyList(): JSX.Element {
               </div>
             </li>
             <li className='user-block__item'>
-              <Link to={AppRoute.SignIn} className='user-block__link'>Sign out</Link>
+              <Link to={AppRoute.SignIn} className='user-block__link'>
+                Sign out
+              </Link>
             </li>
           </ul>
         </header>
@@ -43,15 +45,9 @@ export default function MyList(): JSX.Element {
           <h2 className='catalog__title visually-hidden'>Catalog</h2>
 
           <div className='catalog__films-list'>
-            <FilmCard {...mockFilmCard} />
-            <FilmCard {...mockFilmCard} />
-            <FilmCard {...mockFilmCard} />
-            <FilmCard {...mockFilmCard} />
-            <FilmCard {...mockFilmCard} />
-            <FilmCard {...mockFilmCard} />
-            <FilmCard {...mockFilmCard} />
-            <FilmCard {...mockFilmCard} />
-            <FilmCard {...mockFilmCard} />
+            {mockFilms.map((film) => (
+              <FilmCard {...film}  key={film.id}/>
+            ))}
           </div>
         </section>
 
