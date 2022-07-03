@@ -6,6 +6,7 @@ import { STARS_VALUE } from '../../const/stars-value-list';
 import React, { ChangeEvent, useState } from 'react';
 
 const { posterImage, name, backgroundImage, id } = mockFilms[3];
+const MAX_STAR_VALUE = '10';
 
 export default function AddReview(): JSX.Element {
   const [activeStar, setActiveStar] = useState<string | null>(null);
@@ -13,7 +14,7 @@ export default function AddReview(): JSX.Element {
 
   function getStarValue(starValue: string): string {
     return starValue.slice(starValue.length - 1) === '0'
-      ? '10'
+      ? MAX_STAR_VALUE
       : starValue.slice(starValue.length - 1);
   }
   
