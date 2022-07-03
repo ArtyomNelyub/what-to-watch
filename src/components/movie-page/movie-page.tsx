@@ -10,27 +10,25 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/app-route';
 import { useState } from 'react';
 
-type DescriptionState = {
-  [key: string]: boolean;
+type Tabs = 'Overview' | 'Details' | 'Reviews';
+type TabsState = {
+  [k: string]: boolean;
 };
+
+const tabsPages: Tabs[] = ['Overview', 'Details', 'Reviews'];
+
 const { backgroundImage, name, genre, released, posterImage, id } =
   mockFilms[2];
 
 export default function MoviePage(): JSX.Element {
-  const descriptionPages: string[] = ['Overview', 'Details', 'Reviews'];
-  const [activeDescription, setDescription] = useState<DescriptionState>({
-    Overview: true,
-    Details: false,
-    Reviews: false,
-  });
+  const [activeTab, setActiveTab] = useState<TabsState>(setTab(tabsPages[0]));
 
-  function setActiveDescription(active: string) {
-    setDescription({
-      Overview: false,
-      Details: false,
-      Reviews: false,
-      [active]: true,
-    });
+  function setTab(active: Tabs): TabsState {
+    const tabsEntries = tabsPages.map((tab): [Tabs, boolean] =>
+      tab === active ? [tab, true] : [tab, false]
+    );
+
+    return Object.fromEntries(tabsEntries);
   }
 
   return (
@@ -95,34 +93,32 @@ export default function MoviePage(): JSX.Element {
             <div className='film-card__desc'>
               <nav className='film-nav film-card__nav'>
                 <ul className='film-nav__list'>
-                  {descriptionPages.map((description) => (
+                  {tabsPages.map((tab) => (
                     <li
-                      key={description}
+                      key={tab}
                       onClick={() => {
-                        setActiveDescription(description);
+                        setActiveTab(setTab(tab));
                       }}
                       className={
-                        activeDescription[description]
+                        activeTab[tab]
                           ? 'film-nav__item film-nav__item--active'
                           : 'film-nav__item'
                       }
                     >
-                      <a
-                        href='#'
+                      <span
                         className='film-nav__link'
-                        onClick={(e) => e.preventDefault()}
+                        style={{ cursor: 'pointer' }}
                       >
-                        {description}
-                      </a>
+                        {tab}
+                      </span>
                     </li>
                   ))}
                 </ul>
               </nav>
 
-              {activeDescription.Overview && <Overview {...mockFilms[2]} />}
-              {activeDescription.Details && <Details {...mockFilms[2]} />}
-              {activeDescription.Reviews && <Reviews />}
-              
+              {activeTab.Overview && <Overview {...mockFilms[2]} />}
+              {activeTab.Details && <Details {...mockFilms[2]} />}
+              {activeTab.Reviews && <Reviews />}
             </div>
           </div>
         </div>

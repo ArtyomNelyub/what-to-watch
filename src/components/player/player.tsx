@@ -2,11 +2,26 @@ import SvgContainer from '../svg-container/svg-container';
 import { useNavigate } from 'react-router-dom';
 import { mockFilms } from '../../mocks/mock-films';
 import { AppRoute } from '../../const/app-route';
-
-const { backgroundImage, videoLink, runTime, name, id } = mockFilms[1];
+import { useEffect, useRef, useState } from 'react';
+const { backgroundImage, videoLink, runTime, name, id } = mockFilms[2];
 
 export default function Player(): JSX.Element {
   const navigate = useNavigate();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (videoRef.current === null) {
+      return;
+    }
+
+    if (isPlaying) {
+      videoRef.current.play();
+      return;
+    }
+
+    videoRef.current.pause();
+  }, [isPlaying]);
 
   return (
     <>
@@ -14,6 +29,7 @@ export default function Player(): JSX.Element {
 
       <div className='player'>
         <video
+          ref={videoRef}
           src={videoLink}
           className='player__video'
           poster={backgroundImage}
@@ -43,7 +59,11 @@ export default function Player(): JSX.Element {
           </div>
 
           <div className='player__controls-row'>
-            <button type='button' className='player__play'>
+            <button 
+              type='button' 
+              className='player__play'
+              onClick={() => setIsPlaying(!isPlaying)}  
+            >
               <svg viewBox='0 0 19 19' width='19' height='19'>
                 <use xlinkHref='#play-s'></use>
               </svg>

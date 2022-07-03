@@ -6,7 +6,7 @@ import Player from './player/player';
 import SignIn from './sign-in/sign-in';
 import AddReview from './add-review/add-review';
 import NotFound from './not-found/not-found';
-import RequireAuth from './HOC/require-auth';
+import RequireAuth from './hocs/require-auth';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../const/app-route';
 import { AuthorizationStatus } from '../const/authorization-status';
