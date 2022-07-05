@@ -1,0 +1,1 @@
+export const STEP_SHOWED_FILMS = 8;
