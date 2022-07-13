@@ -3,7 +3,7 @@ import { AppRoute } from '../../const/app-route';
 
 type BreadCrumbsProps = {
   name: string;
-  id: number;
+  id: string;
 }
 
 export default function BreadCrumbs(props: BreadCrumbsProps): JSX.Element {

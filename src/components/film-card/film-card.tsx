@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/app-route';
 import { Film } from '../../types/film';
-import { DELAY } from '../../const/delay';
+import { DELAY } from '../../const/delay-videoplayer';
 
 export default function FilmCard(props: Film): JSX.Element {
   const { name, id, previewImage, previewVideoLink } = props;

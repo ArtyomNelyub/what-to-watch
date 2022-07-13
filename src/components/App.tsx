@@ -6,41 +6,43 @@ import Player from './player/player';
 import SignIn from './sign-in/sign-in';
 import AddReview from './add-review/add-review';
 import NotFound from './not-found/not-found';
-import RequireAuth from './hocs/require-auth';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import RequireAuth from './require-auth/require-auth';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../const/app-route';
-import { AuthorizationStatus } from '../const/authorization-status';
+import { HistoryRouter } from './history-route/history-route';
+import { browserHistory } from '../services/browser-history';
+import Layout from './layout/layout';
 
 function App() {
+
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
-        <Route
-          path={AppRoute.Main}
-          element={<Main />}
-        />
-        <Route
-          path={AppRoute.MyList}
-          element={
-            <RequireAuth authorizationStatus={AuthorizationStatus.Auth}>
-              <MyList />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path={`${AppRoute.Film}/:id${AppRoute.AddReview}`}
-          element={
-            <RequireAuth authorizationStatus={AuthorizationStatus.Auth}>
-              <AddReview />
-            </RequireAuth>
-          }
-        />
-        <Route path={`${AppRoute.Film}/:id`} element={<MoviePage />} />
-        <Route path={`${AppRoute.Player}/:id`} element={<Player />} />
-        <Route path={AppRoute.SignIn} element={<SignIn />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path = '/' element={<Layout />}>
+          <Route path={AppRoute.Main} element={<Main />} />
+          <Route
+            path={AppRoute.MyList}
+            element={
+              <RequireAuth>
+                <MyList />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={`${AppRoute.Film}/:id${AppRoute.AddReview}`}
+            element={
+              <RequireAuth>
+                <AddReview />
+              </RequireAuth>
+            }
+          />
+          <Route path={`${AppRoute.Film}/:id`} element={<MoviePage />} />
+          <Route path={`${AppRoute.Player}/:id`} element={<Player />} />
+          <Route path={AppRoute.SignIn} element={<SignIn />} />
+          <Route path='*' element={<NotFound />} />
+        </Route>
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

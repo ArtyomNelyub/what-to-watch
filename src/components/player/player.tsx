@@ -1,15 +1,19 @@
 import SvgContainer from '../svg-container/svg-container';
-import { useNavigate } from 'react-router-dom';
-import { mockFilms } from '../../mocks/mock-films';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const/app-route';
 import { useEffect, useRef, useState } from 'react';
-const { backgroundImage, videoLink, runTime, name, id } = mockFilms[2];
+import { store } from '../../store';
+import { fetchCurrentFilm } from '../../store/api-actions';
+import { useAppSelector } from '../../hooks';
+import Preloader from '../preloader/preloader';
 
 export default function Player(): JSX.Element {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const currentFilm = useAppSelector(state => state.currentFilm);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
+ 
   useEffect(() => {
     if (videoRef.current === null) {
       return;
@@ -22,6 +26,18 @@ export default function Player(): JSX.Element {
 
     videoRef.current.pause();
   }, [isPlaying]);
+
+  useEffect(()=>{
+    if (currentFilm?.id.toString() !== id as string) {
+      store.dispatch(fetchCurrentFilm(id as string));
+    }
+  }, [currentFilm?.id, id]);
+
+  if (currentFilm === null || currentFilm.id.toString() !== id as string) {
+    return <Preloader />
+  }
+
+  const { backgroundImage, videoLink, runTime, name } = currentFilm;
 
   return (
     <>
