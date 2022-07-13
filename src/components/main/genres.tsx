@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ALL_GENRES } from '../../const/genres-list';
+import { ALL_GENRES } from '../../const/all-genres';
 import { useAppDispatch } from '../../hooks';
 import { useAppSelector } from '../../hooks';
 import { setGenre } from '../../store/action';

@@ -1,7 +1,7 @@
-import Header from '../header/header';
-import { Link } from 'react-router-dom';
 import { Film } from '../../types/film';
-import { AppRoute } from '../../const/app-route';
+import Logo from '../logo/logo';
+import UserBlock from '../user-block/user-block';
+import PosterButtons from '../poster-buttons/poster-buttons';
 
 export default function Preview(props: Film): JSX.Element {
   const { backgroundImage, name, posterImage, genre, released, id } = props;
@@ -14,7 +14,11 @@ export default function Preview(props: Film): JSX.Element {
 
       <h1 className='visually-hidden'>WTW</h1>
 
-      <Header />
+      <header className='page-header film-card__head'>
+        <Logo />
+
+        <UserBlock />
+      </header>
 
       <div className='film-card__wrap'>
         <div className='film-card__info'>
@@ -29,24 +33,7 @@ export default function Preview(props: Film): JSX.Element {
               <span className='film-card__year'>{released}</span>
             </p>
 
-            <div className='film-card__buttons'>
-              <Link
-                to={`${AppRoute.Player}/${id}`}
-                className='btn btn--play film-card__button'
-                type='button'
-              >
-                <svg viewBox='0 0 19 19' width='19' height='19'>
-                  <use xlinkHref='#play-s'></use>
-                </svg>
-                <span>Play</span>
-              </Link>
-              <button className='btn btn--list film-card__button' type='button'>
-                <svg viewBox='0 0 19 20' width='19' height='20'>
-                  <use xlinkHref='#add'></use>
-                </svg>
-                <span>My list</span>
-              </button>
-            </div>
+            <PosterButtons id={id.toString()}/>
           </div>
         </div>
       </div>

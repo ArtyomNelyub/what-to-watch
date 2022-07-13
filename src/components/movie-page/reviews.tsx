@@ -1,4 +1,3 @@
-import { mockComments } from '../../mocks/mock-comments';
 import { Comment } from '../../types/comment';
 
 function Review(comment: Comment): JSX.Element {
@@ -20,17 +19,21 @@ function Review(comment: Comment): JSX.Element {
   );
 }
 
-export default function Reviews(): JSX.Element {
+type ReviewsProps = {
+  comments: Comment[];
+}
+
+export default function Reviews( {comments}: ReviewsProps): JSX.Element {
   return (
     <div className='film-card__reviews film-card__row'>
       <div className='film-card__reviews-col'>
-        {mockComments.map(
+        {comments.map(
           (comment, index) => (index) % 2 === 0 && <Review {...comment} key={comment.id}/>
         )}
       </div>
 
       <div className='film-card__reviews-col'>
-        {mockComments.map(
+        {comments.map(
           (comment, index) => (index) % 2 !== 0 && <Review {...comment} key={comment.id}/>
         )}
       </div>

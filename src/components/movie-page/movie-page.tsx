@@ -1,34 +1,52 @@
 import SvgContainer from '../svg-container/svg-container';
-import Header from '../header/header';
 import Footer from '../footer/footer';
 import FilmCard from '../film-card/film-card';
 import Overview from './overview';
 import Details from './details';
 import Reviews from './reviews';
-import { mockFilms } from '../../mocks/mock-films';
-import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const/app-route';
-import { useState } from 'react';
+import Logo from '../logo/logo';
+import UserBlock from '../user-block/user-block';
+import Preloader from '../preloader/preloader';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { store } from '../../store';
+import { fetchComments, fetchCurrentFilm, fetchSimilarFilms } from '../../store/api-actions';
+import { useAppSelector } from '../../hooks';
+import { changeSimilarFilmsStatus } from '../../store/action';
+import PosterButtons from '../poster-buttons/poster-buttons';
 
-type Tabs = 'Overview' | 'Details' | 'Reviews';
 type TabsState = {
   [k: string]: boolean;
 };
 
-const tabsPages: Tabs[] = ['Overview', 'Details', 'Reviews'];
-
-const { backgroundImage, name, genre, released, posterImage, id } =
-  mockFilms[2];
+const tabsPages: string[] = ['Overview', 'Details', 'Reviews'];
 
 export default function MoviePage(): JSX.Element {
+  const { id } = useParams();
+
+  useEffect(() => {
+    store.dispatch(changeSimilarFilmsStatus(false));
+    store.dispatch(fetchSimilarFilms(id as string));
+    store.dispatch(fetchComments(id as string));
+    store.dispatch(fetchCurrentFilm(id as string));
+  }, [id]);
+
+  const film = useAppSelector((state) => state.currentFilm);
+  const currentComments = useAppSelector((state)=>state.currentComments);
+  const similarFilms = useAppSelector(state => state.similarFilms);
+  const isSimilarFilmsLoaded = useAppSelector(state => state.isSimilarFilmsLoaded);
   const [activeTab, setActiveTab] = useState<TabsState>(setTab(tabsPages[0]));
 
-  function setTab(active: Tabs): TabsState {
-    const tabsEntries = tabsPages.map((tab): [Tabs, boolean] =>
+  function setTab(active: string): TabsState {
+    const tabsEntries = tabsPages.map((tab): [string, boolean] =>
       tab === active ? [tab, true] : [tab, false]
     );
 
     return Object.fromEntries(tabsEntries);
+  }
+
+  if (film === null || film.id.toString() !== id || !isSimilarFilmsLoaded) {
+    return <Preloader />;
   }
 
   return (
@@ -38,48 +56,27 @@ export default function MoviePage(): JSX.Element {
       <section className='film-card film-card--full'>
         <div className='film-card__hero'>
           <div className='film-card__bg'>
-            <img src={backgroundImage} alt={name} />
+            <img src={film.backgroundImage} alt={film.name} />
           </div>
 
           <h1 className='visually-hidden'>WTW</h1>
 
-          <Header />
+          <header className='page-header film-card__head'>
+            <Logo />
+
+            <UserBlock />
+          </header>
 
           <div className='film-card__wrap'>
             <div className='film-card__desc'>
-              <h2 className='film-card__title'>{name}</h2>
+              <h2 className='film-card__title'>{film.name}</h2>
               <p className='film-card__meta'>
-                <span className='film-card__genre'>{genre}</span>
-                <span className='film-card__year'>{released}</span>
+                <span className='film-card__genre'>{film.genre}</span>
+                <span className='film-card__year'>{film.released}</span>
               </p>
 
-              <div className='film-card__buttons'>
-                <Link
-                  to={`${AppRoute.Player}/${id}`}
-                  className='btn btn--play film-card__button'
-                  type='button'
-                >
-                  <svg viewBox='0 0 19 19' width='19' height='19'>
-                    <use xlinkHref='#play-s'></use>
-                  </svg>
-                  <span>Play</span>
-                </Link>
-                <button
-                  className='btn btn--list film-card__button'
-                  type='button'
-                >
-                  <svg viewBox='0 0 19 20' width='19' height='20'>
-                    <use xlinkHref='#add'></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
-                <Link
-                  to={`${AppRoute.Film}/1${AppRoute.AddReview}`}
-                  className='btn film-card__button'
-                >
-                  Add review
-                </Link>
-              </div>
+             <PosterButtons id={id}/>
+
             </div>
           </div>
         </div>
@@ -87,7 +84,12 @@ export default function MoviePage(): JSX.Element {
         <div className='film-card__wrap film-card__translate-top'>
           <div className='film-card__info'>
             <div className='film-card__poster film-card__poster--big'>
-              <img src={posterImage} alt={name} width='218' height='327' />
+              <img
+                src={film.posterImage}
+                alt={film.name}
+                width='218'
+                height='327'
+              />
             </div>
 
             <div className='film-card__desc'>
@@ -116,9 +118,9 @@ export default function MoviePage(): JSX.Element {
                 </ul>
               </nav>
 
-              {activeTab.Overview && <Overview {...mockFilms[2]} />}
-              {activeTab.Details && <Details {...mockFilms[2]} />}
-              {activeTab.Reviews && <Reviews />}
+              {activeTab.Overview && <Overview {...film} />}
+              {activeTab.Details && <Details {...film} />}
+              {activeTab.Reviews && <Reviews comments={currentComments}/>}
             </div>
           </div>
         </div>
@@ -129,8 +131,8 @@ export default function MoviePage(): JSX.Element {
           <h2 className='catalog__title'>More like this</h2>
 
           <div className='catalog__films-list'>
-            {mockFilms.map((film) => (
-              <FilmCard {...film} key={film.id} />
+            {similarFilms.map((film) => (
+              film.id.toString() !== id && <FilmCard {...film} key={film.id} />
             ))}
           </div>
         </section>
