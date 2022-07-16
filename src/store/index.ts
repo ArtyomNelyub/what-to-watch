@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createAPI } from '../services/api';
 import { redirect } from './middleware/redirect';
-import { reducer } from './reducer';
+import { rootReducer } from './root-reducer';
 
 export const api = createAPI();
 const middleware = [redirect];
 
 export const store = configureStore({
-  reducer,
+  reducer: rootReducer,
   middleware: (gDM) =>
     gDM({
       thunk: {

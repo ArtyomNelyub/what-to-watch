@@ -1,17 +1,18 @@
 import React from 'react';
-import Main from './main/main';
-import MoviePage from './movie-page/movie-page';
-import MyList from './my-list/my-list';
-import Player from './player/player';
-import SignIn from './sign-in/sign-in';
-import AddReview from './add-review/add-review';
-import NotFound from './not-found/not-found';
-import RequireAuth from './require-auth/require-auth';
+import Main from './pages/main/main';
+import MoviePage from './pages/movie-page/movie-page';
+import MyList from './pages/my-list/my-list';
+import Player from './pages/player/player';
+import SignIn from './pages/sign-in/sign-in';
+import AddReview from './pages/add-review/add-review';
+import NotFound from './UI/not-found/not-found';
+import RequireAuth from './business/require-auth/require-auth';
+import Layout from './business/layout/layout';
 import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../const/app-route';
-import { HistoryRouter } from './history-route/history-route';
+import { HistoryRouter } from './business/history-route/history-route';
 import { browserHistory } from '../services/browser-history';
-import Layout from './layout/layout';
+
 
 function App() {
 
