@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './components/App';
-import ErrorMessage from './components/error-message/error-message';
+import ErrorMessage from './components/UI/error-message/error-message';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
 

@@ -2,8 +2,8 @@ import request, { AxiosResponse } from 'axios';
 import { ErrorType } from '../types/error-type';
 import { StatusCodes } from 'http-status-codes';
 import { store } from '../store';
-import { addErrorMessage } from '../store/action';
-import { clearErrorAction } from '../store/api-actions';
+import { clearErrorAction } from '../store/api-actions/api-actions-user';
+import { addErrorMessage } from '../store/app-process/app-process';
 
 export const errorHandle = (error: ErrorType): void => {
   if (!request.isAxiosError(error)) {

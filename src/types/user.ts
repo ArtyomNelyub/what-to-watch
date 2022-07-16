@@ -1,4 +1,4 @@
-import { Token } from '../services/token';
+type Token = string;
 
 export type UserData= {
   avatarUrl: string;
@@ -7,6 +7,8 @@ export type UserData= {
   name: string;
   token: Token;
 };
+
+export type ShortUserData = Omit<UserData, 'id'>;
 
 export type UserStatusError = {
   error: string;
